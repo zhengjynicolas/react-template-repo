@@ -29,6 +29,7 @@ npm install
 npm run dev
 npm run typecheck
 npm run lint
+npm run format
 npm run test
 ```
 
@@ -47,6 +48,8 @@ npm run test
 - Zustand
 - React Router
 - PostCSS
+- Autoprefixer
 - Vitest
 - Testing Library
+- Prettier
 - ESLint 9
