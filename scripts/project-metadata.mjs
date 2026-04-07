@@ -28,5 +28,8 @@ export const COPY_IGNORE = new Set([
 
 export const TEMPLATE_CREATE_IGNORE = new Set([
   ...COPY_IGNORE,
+  ".codex",
   "bin",
+  "package-lock.json",
+  "scripts",
 ]);

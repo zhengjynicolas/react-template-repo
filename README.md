@@ -138,5 +138,4 @@ npm run test
 - React Router
 - Vitest
 - Testing Library
-- Happy DOM
 - ESLint 9

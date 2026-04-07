@@ -7,6 +7,7 @@ import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { stdin as input, stdout as output } from "node:process";
 import { TEMPLATE_CREATE_IGNORE } from "../scripts/project-metadata.mjs";
+import { renameProject } from "../scripts/rename-project.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const templateRoot = path.resolve(__dirname, "..");
@@ -35,10 +36,18 @@ async function copyTemplate(sourceDir, targetDir, rootTargetName) {
     }
 
     const sourcePath = path.join(sourceDir, entry.name);
-    const targetPath = path.join(targetDir, entry.name);
+    const targetFileName =
+      sourceDir === templateRoot && entry.name === "README.app.md"
+        ? "README.md"
+        : entry.name;
+    const targetPath = path.join(targetDir, targetFileName);
 
     if (entry.isDirectory()) {
       await copyTemplate(sourcePath, targetPath, rootTargetName);
+      continue;
+    }
+
+    if (sourceDir === templateRoot && entry.name === "README.md") {
       continue;
     }
 
@@ -53,14 +62,6 @@ async function pathExists(targetPath) {
   } catch {
     return false;
   }
-}
-
-async function runRename(targetDir, projectName) {
-  await runCommand(
-    process.execPath,
-    ["./scripts/rename-project.mjs", projectName],
-    targetDir,
-  );
 }
 
 async function runInstall(targetDir) {
@@ -170,7 +171,7 @@ async function main() {
   }
 
   await copyTemplate(templateRoot, targetDir, rootTargetName);
-  await runRename(targetDir, projectName);
+  await renameProject(targetDir, projectName);
 
   if (!skipInstall) {
     await runInstall(targetDir);

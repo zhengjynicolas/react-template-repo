@@ -2,7 +2,7 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   COPY_IGNORE,
   DEFAULT_PACKAGE_NAME,
@@ -75,16 +75,19 @@ async function walkAndReplace(currentDir, packageName, titleName) {
   }
 }
 
-async function updatePackageJsonName(packageName) {
-  const packageJsonPath = path.join(rootDir, "package.json");
+async function updatePackageJsonName(targetRootDir, packageName) {
+  const packageJsonPath = path.join(targetRootDir, "package.json");
   const packageJson = JSON.parse(await fs.readFile(packageJsonPath, "utf8"));
 
   packageJson.name = packageName;
-  packageJson.bin = undefined;
-  packageJson.files = undefined;
   packageJson.private = true;
   delete packageJson.bin;
   delete packageJson.files;
+  delete packageJson.scripts.rename;
+
+  if (Object.keys(packageJson.scripts).length === 0) {
+    delete packageJson.scripts;
+  }
 
   await fs.writeFile(
     packageJsonPath,
@@ -101,21 +104,30 @@ async function main() {
     process.exit(1);
   }
 
+  await renameProject(rootDir, rawName);
+}
+
+export async function renameProject(targetRootDir, rawName) {
   const packageName = normalizePackageName(rawName);
 
   if (!packageName) {
-    console.error("Project name is invalid after normalization.");
-    process.exit(1);
+    throw new Error("Project name is invalid after normalization.");
   }
 
   const titleName = toTitleCase(packageName);
-  await walkAndReplace(rootDir, packageName, titleName);
+  await walkAndReplace(targetRootDir, packageName, titleName);
 
-  if (await exists(path.join(rootDir, "package.json"))) {
-    await updatePackageJsonName(packageName);
+  if (await exists(path.join(targetRootDir, "package.json"))) {
+    await updatePackageJsonName(targetRootDir, packageName);
   }
 
   console.log(`Renamed project to "${packageName}"`);
 }
 
-await main();
+const isDirectRun =
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  await main();
+}
