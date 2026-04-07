@@ -46,6 +46,7 @@ npm run test
 - TypeScript
 - Zustand
 - React Router
+- PostCSS
 - Vitest
 - Testing Library
 - ESLint 9
