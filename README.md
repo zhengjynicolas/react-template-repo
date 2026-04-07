@@ -19,7 +19,7 @@ Examples:
 npx github:<owner>/<repo> my-app
 npx github:<owner>/<repo> my-app /your/path --yes
 npx github:<owner>/<repo> my-app /your/path --yes --dry-run
-npx github:<owner>/<repo> --skip-install
+npx github:<owner>/<repo> my-app /your/path --yes --install
 ```
 
 ## Local development
@@ -37,6 +37,7 @@ npm run test
 - Recommended Node.js: `22 LTS`
 - Supported Node.js: `>=22.13.0`
 - Generated projects keep `AGENTS.md`
+- Dependencies are not installed automatically
 
 ## Stack
 

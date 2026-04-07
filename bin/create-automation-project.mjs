@@ -14,7 +14,7 @@ const templateRoot = path.resolve(__dirname, "..");
 
 function printUsage() {
   console.log(
-    "Usage: create-automation-react-app [project-name] [project-location] [--skip-install] [--dry-run] [--yes]",
+    "Usage: create-automation-react-app [project-name] [project-location] [--install] [--dry-run] [--yes]",
   );
 }
 
@@ -131,7 +131,7 @@ async function resolveProjectOptions(defaultName, defaultLocation, autoConfirm) 
 
 async function main() {
   const args = process.argv.slice(2);
-  const skipInstall = args.includes("--skip-install");
+  const shouldInstall = args.includes("--install");
   const dryRun = args.includes("--dry-run");
   const autoConfirm = args.includes("--yes");
   const positionalArgs = args.filter((arg) => !arg.startsWith("--"));
@@ -165,7 +165,7 @@ async function main() {
     console.log(`Project name: ${projectName}`);
     console.log(`Project location: ${projectLocation}`);
     console.log(`Target directory: ${targetDir}`);
-    console.log(`Install dependencies: ${skipInstall ? "no" : "yes"}`);
+    console.log(`Install dependencies: ${shouldInstall ? "yes" : "no"}`);
     console.log("No files were written because --dry-run was used.");
     process.exit(0);
   }
@@ -173,7 +173,7 @@ async function main() {
   await copyTemplate(templateRoot, targetDir, rootTargetName);
   await renameProject(targetDir, projectName);
 
-  if (!skipInstall) {
+  if (shouldInstall) {
     await runInstall(targetDir);
   }
 
@@ -181,7 +181,7 @@ async function main() {
   console.log(`Project created in ${targetDir}`);
   console.log(`Next steps:`);
   console.log(`  cd ${targetDir}`);
-  if (skipInstall) {
+  if (!shouldInstall) {
     console.log("  npm install");
   }
   console.log("  npm run dev");
