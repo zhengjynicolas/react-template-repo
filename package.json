@@ -11,6 +11,7 @@
         ".nvmrc",
         "AGENTS.md",
         "bin",
+        "gitignore.template",
         "scripts",
         "src",
         "public",
@@ -21,7 +22,6 @@
         "tsconfig.app.json",
         "tsconfig.node.json",
         "eslint.config.mjs",
-        ".gitignore",
         "README.md"
     ],
     "scripts": {

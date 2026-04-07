@@ -39,6 +39,8 @@ async function copyTemplate(sourceDir, targetDir, rootTargetName) {
     const targetFileName =
       sourceDir === templateRoot && entry.name === "README.app.md"
         ? "README.md"
+        : sourceDir === templateRoot && entry.name === "gitignore.template"
+          ? ".gitignore"
         : entry.name;
     const targetPath = path.join(targetDir, targetFileName);
 
@@ -47,7 +49,10 @@ async function copyTemplate(sourceDir, targetDir, rootTargetName) {
       continue;
     }
 
-    if (sourceDir === templateRoot && entry.name === "README.md") {
+    if (
+      sourceDir === templateRoot &&
+      (entry.name === "README.md" || entry.name === ".gitignore")
+    ) {
       continue;
     }
 
