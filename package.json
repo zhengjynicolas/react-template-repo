@@ -8,11 +8,14 @@
         "create-automation-react-app": "./bin/create-automation-project.mjs"
     },
     "files": [
+        ".nvmrc",
+        "AGENTS.md",
         "bin",
         "scripts",
         "src",
         "public",
         "index.html",
+        "README.app.md",
         "vite.config.ts",
         "tsconfig.json",
         "tsconfig.app.json",
