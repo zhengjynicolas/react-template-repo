@@ -34,3 +34,9 @@ npm run test
 - Testing Library
 - Prettier
 - ESLint 9
+
+## Public assets
+
+- `public/favicon.svg`
+- `public/robots.txt`
+- `public/site.webmanifest`
